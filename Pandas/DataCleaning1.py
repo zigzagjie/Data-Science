@@ -63,7 +63,8 @@ C     pp         0.600000
       ll         0.400000
 Name: Setting, dtype: float64
 
-####
+
+      ####
 """
 Ultimate goal: we just want to get the most frequent combination in each name
 like 
@@ -136,5 +137,77 @@ df2=df1.groupby(['Name'])['Setting'].value_counts()/df1.groupby('Name')['Setting
 df3=df2.max(level='Name')
 df2[df2-df3==0]
 
+##########
+# advanced goal: to impute Nan with the most frequent name in the group 
 
+"""
+we have some missing data in df1
+>>> df1
+   Name Setting Setting2   Num
+0     A     Sun      Sun   1.0
+1     A     Sun      Sun   2.0
+2     A    Moon     Moon   3.0
+3     A    None      NaN   NaN
+4     B      YY       YY   2.0
+5     B      YY       YY   3.0
+6     B      YY       YY   4.0
+7     B      XX       XX   5.0
+8     B    None      NaN   NaN
+9     C    Tree     Tree   9.0
+10    C    None      NaN   NaN
+11    C    Tree     Tree  10.0
+12    C    Tree     Tree  11.0
+13    C    None      NaN   NaN
+14    C    Tree     Tree  12.0
+15    C    None      NaN   NaN
+"""
+df1.groupby('Name')['Setting2'].transform(lambda x: x.fillna(x.mode().ix[0]))
+
+"""
+>>> df1.groupby('Name')['Setting2'].transform(lambda x: x.fillna(x.mode().ix[0]))
+0      Sun
+1      Sun
+2     Moon
+3      Sun
+4       YY
+5       YY
+6       YY
+7       XX
+8       YY
+9     Tree
+10    Tree
+11    Tree
+12    Tree
+13    Tree
+14    Tree
+15    Tree
+Name: Setting2, dtype: object
+
+That's the only way to impute cell with mode 
+actually impute with groupby mean is easier
+
+>>> df1['Num']=df1.groupby('Name')['Num'].transform(lambda x: x.fillna(x.mean()))
+>>> df1
+   Name Setting Setting2   Num
+0     A     Sun      Sun   1.0
+1     A     Sun      Sun   2.0
+2     A    Moon     Moon   3.0
+3     A    None      NaN   2.0
+4     B      YY       YY   2.0
+5     B      YY       YY   3.0
+6     B      YY       YY   4.0
+7     B      XX       XX   5.0
+8     B    None      NaN   3.5
+9     C    Tree     Tree   9.0
+10    C    None      NaN  10.5
+11    C    Tree     Tree  10.0
+12    C    Tree     Tree  11.0
+13    C    None      NaN  10.5
+14    C    Tree     Tree  12.0
+15    C    None      NaN  10.5
+
+"""
+# Transform function is important aligned with groupby
+# mode function should be scrutinized
+# pandas is powerful but need to learned well. 
 
