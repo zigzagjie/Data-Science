@@ -211,3 +211,78 @@ actually impute with groupby mean is easier
 # mode function should be scrutinized
 # pandas is powerful but need to learned well. 
 
+###### groupby function details
+
+import pandas as pd
+df1=pd.DataFrame()
+df1['Name']=['A','A','A','A','B','B','B','C','C','C','C','C','C']
+df1['Setting']=['Sun','Sun','Moon',None,'Tree','Tree','P','LL','LL','MM','MM','MM','MM']
+
+"""
+>>> df1
+   Name Setting
+0     A     Sun
+1     A     Sun
+2     A    Moon
+3     A    None
+4     B    Tree
+5     B    Tree
+6     B       P
+7     C      LL
+8     C      LL
+9     C      MM
+10    C      MM
+11    C      MM
+12    C      MM
+"""
+
+# group by two equivalent functions
+
+df1.groupby('Name')['Setting'].value_counts()
+"""
+Name  Setting
+A     Sun        2
+      Moon       1
+B     Tree       2
+      P          1
+C     MM         4
+      LL         2
+Name: Setting, dtype: int64
+"""
+
+df1['Setting'].groupby(df1['Name']).value_counts()
+""""
+Name  Setting
+A     Sun        2
+      Moon       1
+B     Tree       2
+      P          1
+C     MM         4
+      LL         2
+Name: Setting, dtype: int64
+>>>
+"""
+
+# https://towardsdatascience.com/pandas-tips-and-tricks-33bcc8a40bb9
+
+# goal is still to get the max frequent item in each group
+df1.groupby('Name').apply(lambda x:x['Setting'].value_counts()).reset_index().groupby('Name').first()
+
+"""
+>>> df1.groupby('Name').apply(lambda x:x['Setting'].value_counts()).reset_index().groupby('Name').first()
+     level_1  Setting
+Name
+A        Sun        2
+B       Tree        2
+C         MM        4
+
+"""
+
+
+
+
+
+
+
+
+
