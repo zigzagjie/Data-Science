@@ -236,7 +236,7 @@ df1['Setting']=['Sun','Sun','Moon',None,'Tree','Tree','P','LL','LL','MM','MM','M
 12    C      MM
 """
 
-# group by two equivalent functions
+# group by three equivalent functions
 
 df1.groupby('Name')['Setting'].value_counts()
 """
@@ -262,7 +262,15 @@ C     MM         4
 Name: Setting, dtype: int64
 >>>
 """
-
+df1.groupby(['Name','Setting']).size()
+Name  Setting
+A     Moon       1
+      Sun        2
+B     P          1
+      Tree       2
+C     LL         2
+      MM         4
+dtype: int64
 # https://towardsdatascience.com/pandas-tips-and-tricks-33bcc8a40bb9
 
 # goal is still to get the max frequent item in each group
