@@ -15,3 +15,9 @@ def find_nth(haystack, needle, n):
         start = haystack.find(needle, start+len(needle))
         n -= 1
     return start
+
+# Task 3: count how many elements in a string
+s='sss,ssss,sss,s,s,s s,s'
+s.count(',')
+
+#6
