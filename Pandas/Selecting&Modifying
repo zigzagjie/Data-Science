@@ -1,0 +1,7 @@
+
+#the df.A==0 expression creates a boolean series that indexes the rows, 'B' selects the column. 
+#You can also use this to transform a subset of a column, 
+
+df.loc[df.A==0, 'B'] = np.nan
+
+#df.ix has be deprecated
