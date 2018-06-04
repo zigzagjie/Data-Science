@@ -5,3 +5,5 @@
 df.loc[df.A==0, 'B'] = np.nan
 
 #df.ix has be deprecated
+
+https://stackoverflow.com/questions/12307099/modifying-a-subset-of-rows-in-a-pandas-dataframe
